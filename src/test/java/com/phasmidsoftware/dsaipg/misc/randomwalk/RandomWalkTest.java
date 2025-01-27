@@ -14,7 +14,7 @@ public class RandomWalkTest {
 
     @Test
     public void testMove0() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         PrivateMethodTester pmt = new PrivateMethodTester(rw);
         pmt.invokePrivate("move", 1, 0);
         assertEquals(1.0, rw.distance(), 1.0E-7);
@@ -25,7 +25,7 @@ public class RandomWalkTest {
      */
     @Test
     public void testDistanceInitial() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         assertEquals(0.0, rw.distance(), 1.0E-7);
     }
 
@@ -34,7 +34,7 @@ public class RandomWalkTest {
      */
     @Test
     public void testDistanceAfterMove() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         PrivateMethodTester pmt = new PrivateMethodTester(rw);
         pmt.invokePrivate("move", 3, 4); // Moves to (3, 4)
         assertEquals(5.0, rw.distance(), 1.0E-7); // sqrt(3^2 + 4^2) = 5
@@ -47,17 +47,17 @@ public class RandomWalkTest {
      */
     @Test
     public void testDistanceEdgeCases() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         PrivateMethodTester pmt = new PrivateMethodTester(rw);
         pmt.invokePrivate("move", Integer.MAX_VALUE, 0); // Large positive move
         assertEquals(Integer.MAX_VALUE, rw.distance(), 1.0E-7);
-        pmt.invokePrivate("move", 0, -Integer.MAX_VALUE); // Neutralize the movement
+        pmt.invokePrivate("move", 0, Integer.MAX_VALUE); // Neutralize the movement
         assertEquals(Math.sqrt(2) * Integer.MAX_VALUE, rw.distance(), 1.0E-7);
     }
 
     @Test
     public void testMove1() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         PrivateMethodTester pmt = new PrivateMethodTester(rw);
         pmt.invokePrivate("move", 1, 0);
         assertEquals(1.0, rw.distance(), 1.0E-7);
@@ -74,7 +74,7 @@ public class RandomWalkTest {
      */
     @Test
     public void testMove2() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         PrivateMethodTester pmt = new PrivateMethodTester(rw);
         pmt.invokePrivate("move", 0, 1);
         assertEquals(1.0, rw.distance(), 1.0E-7);
@@ -91,7 +91,7 @@ public class RandomWalkTest {
      */
     @Test
     public void testMove3() {
-        RandomWalk rw = new RandomWalk();
+        RandomWalk rw = new RandomWalk(7);
         double root2 = Math.sqrt(2);
         PrivateMethodTester pmt = new PrivateMethodTester(rw);
         pmt.invokePrivate("move", 1, 1);
@@ -117,5 +117,31 @@ public class RandomWalkTest {
     public void testRandomWalk2() {
         for (int i = 0; i < 5000; i++)
             assertNotSame(0, RandomWalk.randomWalkMulti(1, 1));
+    }
+
+    /**
+     * More test of RandomWalk.
+     * 10 times of test, each epoch the number of m plus 20;
+     */
+    @Test
+    public void testRandomWalk_new() {
+        /*int step = 10;*/
+        /*int step = 100;
+        int n = 10;
+        for (int i = 0; i < 20; i++){
+            System.out.println("[INFO] Step: " + step + " epoch: " + n);
+            double res = RandomWalk.randomWalkMulti(step, n);
+            *//*step += 20;*//*
+            step += 1000;
+            System.out.println("[INFO] Test " + (i + 1) + " result = " + res );
+        }*/
+        int step = 1000;
+        int n = 10;
+        for (int i = 0; i < 50; i++) {
+            System.out.println("[INFO] Step: " + step + " epoch: " + n);
+            double res = RandomWalk.randomWalkMulti(step, n);
+            step += 10000;
+            System.out.println("[INFO] Test " + (i + 1) + " result = " + res );
+        }
     }
 }
