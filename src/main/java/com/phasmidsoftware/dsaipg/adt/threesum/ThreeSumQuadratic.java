@@ -52,12 +52,18 @@ public class ThreeSumQuadratic implements ThreeSum {
      List<Triple> getTriples(int j) {
          List<Triple> triples = new ArrayList<>();
         // TO BE IMPLEMENTED  : for each candidate, test if a[i] + a[j] + a[k] = 0.
-         for (int i = 0; i < j - 1; i++) {
-             for (int k = i + 1; k < j; k++) {
-                 if (i + k + j == 0) {      // test
-                     triples.add(new Triple(i, k, j));
-                 }
-             }
+         int left = 0;
+         int right = length - 1;
+         while (left < j && j < right) {
+             int sum = a[left] + a[j] + a[right];
+             if (sum == 0) {
+                 triples.add(new Triple(a[left], a[j], a[right]));
+                 left++;
+                 right--;
+             } else if (sum < 0)
+                 left++;
+             else
+                 right--;
          }
          return triples;
      }
