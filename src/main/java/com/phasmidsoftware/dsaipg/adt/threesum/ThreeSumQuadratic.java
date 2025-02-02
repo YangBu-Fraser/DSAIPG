@@ -17,6 +17,8 @@ import java.util.List;
  * NOTE: The array provided in the constructor MUST be ordered.
  */
 public class ThreeSumQuadratic implements ThreeSum {
+    private final int[] a;
+    private final int length;
     /**
      * Construct a ThreeSumQuadratic on a.
      *
@@ -50,9 +52,13 @@ public class ThreeSumQuadratic implements ThreeSum {
      List<Triple> getTriples(int j) {
          List<Triple> triples = new ArrayList<>();
         // TO BE IMPLEMENTED  : for each candidate, test if a[i] + a[j] + a[k] = 0.
-throw new RuntimeException("implementation missing");
-    }
-
-    private final int[] a;
-    private final int length;
+         for (int i = 0; i < j - 1; i++) {
+             for (int k = i + 1; k < j; k++) {
+                 if (i + k + j == 0) {      // test
+                     triples.add(new Triple(i, k, j));
+                 }
+             }
+         }
+         return triples;
+     }
 }

@@ -62,9 +62,12 @@ public class ThreeSumBenchmark {
      */
     public void runBenchmarks() {
         System.out.println("ThreeSumBenchmark: N=" + n);
-        benchmarkThreeSum("ThreeSumQuadratic", (xs) -> new ThreeSumQuadratic(xs).getTriples(), n, timeLoggersQuadratic);
-        benchmarkThreeSum("ThreeSumQuadrithmic", (xs) -> new ThreeSumQuadrithmic(xs).getTriples(), n, timeLoggersQuadrithmic);
-        benchmarkThreeSum("ThreeSumCubic", (xs) -> new ThreeSumCubic(xs).getTriples(), n, timeLoggersCubic);
+        benchmarkThreeSum("ThreeSumQuadratic",
+                (xs) -> new ThreeSumQuadratic(xs).getTriples(), n, timeLoggersQuadratic);
+        benchmarkThreeSum("ThreeSumQuadrithmic",
+                (xs) -> new ThreeSumQuadrithmic(xs).getTriples(), n, timeLoggersQuadrithmic);
+        benchmarkThreeSum("ThreeSumCubic",
+                (xs) -> new ThreeSumCubic(xs).getTriples(), n, timeLoggersCubic);
     }
 
     /**
@@ -100,10 +103,16 @@ public class ThreeSumBenchmark {
      * @param timeLoggers  an array of TimeLogger instances responsible for logging the performance
      *                     results of the benchmark.
      */
-    private void benchmarkThreeSum(final String description, final Consumer<int[]> function, int n, final TimeLogger[] timeLoggers) {
+
+    private void benchmarkThreeSum(final String description, final Consumer<int[]> function,
+                                   int n, final TimeLogger[] timeLoggers) {
         if (description.equals("ThreeSumCubic") && n > 4000) return;
-        // TO BE IMPLEMENTED 
-throw new RuntimeException("implementation missing");
+        // TO BE IMPLEMENTED
+        Benchmark_Timer<int[]> benchmarkTimer = new Benchmark_Timer<>(description, function);
+        double time_res = benchmarkTimer.runFromSupplier(supplier, runs);   // result of `runFromSupplier`, avg execution time.
+        for (TimeLogger timeLogger : timeLoggers) {
+            timeLogger.log("Count time: ",time_res, n);
+        }
     }
 
     /**

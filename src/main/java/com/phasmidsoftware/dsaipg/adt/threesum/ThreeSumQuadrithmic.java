@@ -19,6 +19,9 @@ import java.util.List;
  * This algorithm runs in O(N^2 log N) time.
  */
 class ThreeSumQuadrithmic implements ThreeSum {
+    private final int[] a;
+    private final int length;
+
     /**
      * Construct a ThreeSumQuadrithmic on a.
      *
@@ -62,10 +65,20 @@ class ThreeSumQuadrithmic implements ThreeSum {
      */
     Triple getTriple(int i, int j) {
         // TO BE IMPLEMENTED  : use binary search to find the third element
-        // END SOLUTION
-        return null;
-    }
+        int target = -a[i] - a[j];
+        int left = 0, right = length - 1;
 
-    private final int[] a;
-    private final int length;
+        while (left <= right) {
+            int mid = (left + right) / 2 ;
+            if (a[mid] == target) {
+                return new Triple(a[i], a[j], a[mid]);
+            } else if (a[mid] < target) {
+                left = mid + 1;
+            } else if (a[mid] > target){
+                right = mid - 1;
+            } else return new Triple(a[i], a[j], a[mid]);
+        }
+        return null;
+        // END SOLUTION
+    }
 }
