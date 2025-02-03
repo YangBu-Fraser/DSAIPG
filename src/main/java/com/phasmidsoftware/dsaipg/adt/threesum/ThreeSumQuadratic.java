@@ -5,6 +5,7 @@
 package com.phasmidsoftware.dsaipg.adt.threesum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class ThreeSumQuadratic implements ThreeSum {
      * @param a a sorted array.
      */
     public ThreeSumQuadratic(int[] a) {
+        Arrays.sort(a); // sort array.
         this.a = a;
         length = a.length;
     }
@@ -38,9 +40,13 @@ public class ThreeSumQuadratic implements ThreeSum {
      */
     public Triple[] getTriples() {
         List<Triple> triples = new ArrayList<>();
-        for (int i = 0; i < length; i++) triples.addAll(getTriples(i));
-        Collections.sort(triples);
-        return triples.stream().distinct().toArray(Triple[]::new);
+        for (int j = 1; j < length - 1; j++) {
+            triples.addAll(getTriples(j));
+        }
+        return triples.stream()
+                .distinct()
+                .sorted()
+                .toArray(Triple[]::new);
     }
 
     /**
@@ -54,16 +60,20 @@ public class ThreeSumQuadratic implements ThreeSum {
         // TO BE IMPLEMENTED  : for each candidate, test if a[i] + a[j] + a[k] = 0.
          int left = 0;
          int right = length - 1;
+
          while (left < j && j < right) {
              int sum = a[left] + a[j] + a[right];
              if (sum == 0) {
                  triples.add(new Triple(a[left], a[j], a[right]));
+                 while (left < j && a[left] == a[left + 1]) left++;
+                 while (j < right && a[right] == a[right - 1]) right--;
                  left++;
                  right--;
-             } else if (sum < 0)
+             } else if (sum < 0) {
                  left++;
-             else
+             } else {
                  right--;
+             }
          }
          return triples;
      }
