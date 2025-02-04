@@ -72,8 +72,6 @@ class ThreeSumQuadrithmic implements ThreeSum {
             Arrays.sort(q);
             return new Triple(q[0], q[1], q[2]);
         } else return null;
-
         // END SOLUTION
-
     }
 }

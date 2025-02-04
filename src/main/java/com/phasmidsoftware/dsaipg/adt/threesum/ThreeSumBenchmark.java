@@ -109,7 +109,8 @@ public class ThreeSumBenchmark {
         if (description.equals("ThreeSumCubic") && n > 4000) return;
         // TO BE IMPLEMENTED
         Benchmark_Timer<int[]> benchmarkTimer = new Benchmark_Timer<>(description, function);
-        double time_res = benchmarkTimer.runFromSupplier(supplier, runs);   // result of `runFromSupplier`, avg execution time.
+        // result of `runFromSupplier`, avg execution time.
+        double time_res = benchmarkTimer.runFromSupplier(supplier, runs);
         for (TimeLogger timeLogger : timeLoggers) {
             timeLogger.log("Count time: ",time_res, n);
         }
