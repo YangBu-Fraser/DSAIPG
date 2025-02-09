@@ -14,7 +14,6 @@ public class ThreeSumTiming {
     private void timeThreeSumAlgorithms() {
         int n = 1280;
         int numberOfTrials = 2;
-
         System.out.println("N\tCubic\tQuadrithmic\tQuadratic\tQuadraticWithCalipers");
         for (int i = 0; i < numberOfTrials; i++) {
 
@@ -27,7 +26,8 @@ public class ThreeSumTiming {
             long quadraticTime = timeThreeSum(new ThreeSumQuadratic(Arrays.copyOf(a, a.length)));
             long quadraticWithCalipersTime = timeThreeSum(
                     new ThreeSumQuadraticWithCalipers(Arrays.copyOf(a, a.length)));
-            System.out.printf("%d\t%d\t%d\t%d\t%d%n", n, cubicTime, quadrithmicTime, quadraticTime, quadraticWithCalipersTime);
+            System.out.printf("%d\t%d\t%d\t%d\t%d%n",
+                    n, cubicTime, quadrithmicTime, quadraticTime, quadraticWithCalipersTime);
             // Doubling method
             n *= 2;
         }
