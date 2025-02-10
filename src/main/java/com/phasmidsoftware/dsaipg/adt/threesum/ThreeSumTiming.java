@@ -1,3 +1,4 @@
+/*
 package com.phasmidsoftware.dsaipg.adt.threesum;
 
 import com.phasmidsoftware.dsaipg.adt.threesum.*;
@@ -33,6 +34,7 @@ public class ThreeSumTiming {
         }
     }
 
+
     private int[] generateRandomIntArray(int n) {
         Random random = new Random();
         int[] array = new int[n];
@@ -50,3 +52,4 @@ public class ThreeSumTiming {
     }
 }
 
+*/

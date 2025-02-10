@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("ALL")
 public class BenchmarkTest {
-
     int pre = 0;
     int run = 0;
     int post = 0;
@@ -37,8 +36,8 @@ public class BenchmarkTest {
                 });
         double x = bm.run(true, nRuns);
         assertEquals(nRuns, post);
-        assertEquals(nRuns + warmups, run);
-        assertEquals(nRuns + warmups, pre);
+        assertEquals(nRuns + warmups, run );
+        assertEquals(nRuns + warmups, pre );
         assertEquals(100, x, 10);
     }
 

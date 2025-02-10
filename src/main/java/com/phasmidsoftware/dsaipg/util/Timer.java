@@ -66,21 +66,52 @@ public class Timer {
     public <T, U> double repeat(int n, boolean warmup, Supplier<T> supplier,
                                 Function<T, U> function, UnaryOperator<T> preFunction,
                                 Consumer<U> postFunction) {
-        // TO BE IMPLEMENTED : note that the timer is running when this method is called
-        // and should still be running when it returns.
-        long cntTime = 0;
-        for (int i = 0; i < n; i++) {
-            T t = supplier.get();
-            if (preFunction != null) t = preFunction.apply(t);
-            long startTime = getClock();
-            U u = function.apply(t);
-            long endTime = getClock();
-            cntTime += (endTime - startTime);
-            if (postFunction != null) postFunction.accept(u);
-            if (!warmup) lap();
+        /**
+         * TO BE IMPLEMENTED : note that the timer is running when this method is called
+         * and should still be running when it returns.
+         */
+        double sum = 0;
+
+        // pre log
+        if (warmup) {
+            logger.info("Warmup phase started");
+            T input = supplier.get();
+            if (preFunction != null) {
+                logger.debug("Applying preFunction during warmup");
+                input = preFunction.apply(input);
+            }
+            logger.debug("Executing run function during warmup");
+            U result = function.apply(input);
+            if (postFunction != null) {
+                logger.debug("Applying postFunction during warmup");
+                postFunction.accept(result);
+            }
         }
-        if (!warmup) return toMillisecs(cntTime) / n;
-        else return 0.0;
+
+        // main log
+        for (int i = 0; i < n; i++) {
+            logger.info("Starting iteration " + (i + 1) + "/" + n);
+            T input = supplier.get();
+            if (preFunction != null) {
+                logger.debug("Applying preFunction in iteration " + (i + 1));
+                input = preFunction.apply(input);
+            }
+            logger.debug("Executing run function in iteration " + (i + 1));
+            U result = function.apply(input);
+            lap();
+            logger.debug("Lap completed for iteration " + (i + 1));
+            if (postFunction != null) {
+                logger.debug("Applying postFunction in iteration " + (i + 1));
+                postFunction.accept(result);
+            }
+            if (input instanceof Number) {
+                sum += ((Number) input).doubleValue();
+            }
+        }
+        pause();
+        double mean = sum / n;
+        resume();
+        return mean;
     }
 
     /**
@@ -267,7 +298,7 @@ public class Timer {
      */
     private static double toMillisecs(long ticks) {
         // TO BE IMPLEMENTED 
-        return ticks / 1.0E6;
+        return ticks / 1_000_000.0;
         // END SOLUTION
     }
 
