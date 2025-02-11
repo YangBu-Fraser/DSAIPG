@@ -71,37 +71,34 @@ public class Timer {
          * and should still be running when it returns.
          */
         double sum = 0;
-
+        long start, end;
         // pre log
         if (warmup) {
-            logger.info("Warmup phase started");
+
             T input = supplier.get();
             if (preFunction != null) {
-                logger.debug("Applying preFunction during warmup");
                 input = preFunction.apply(input);
             }
-            logger.debug("Executing run function during warmup");
             U result = function.apply(input);
             if (postFunction != null) {
-                logger.debug("Applying postFunction during warmup");
                 postFunction.accept(result);
             }
         }
 
         // main log
         for (int i = 0; i < n; i++) {
-            logger.info("Starting iteration " + (i + 1) + "/" + n);
+
             T input = supplier.get();
             if (preFunction != null) {
-                logger.debug("Applying preFunction in iteration " + (i + 1));
                 input = preFunction.apply(input);
             }
-            logger.debug("Executing run function in iteration " + (i + 1));
+            start = getClock();
             U result = function.apply(input);
+            end = getClock();
+            sum += toMillisecs(end - start);
             lap();
-            logger.debug("Lap completed for iteration " + (i + 1));
             if (postFunction != null) {
-                logger.debug("Applying postFunction in iteration " + (i + 1));
+
                 postFunction.accept(result);
             }
             if (input instanceof Number) {
@@ -111,6 +108,7 @@ public class Timer {
         pause();
         double mean = sum / n;
         resume();
+        System.out.println(mean);
         return mean;
     }
 

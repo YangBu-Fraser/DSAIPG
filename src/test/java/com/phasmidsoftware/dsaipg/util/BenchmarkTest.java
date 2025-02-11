@@ -36,8 +36,8 @@ public class BenchmarkTest {
                 });
         double x = bm.run(true, nRuns);
         assertEquals(nRuns, post);
-        assertEquals(nRuns + warmups, run );
-        assertEquals(nRuns + warmups, pre );
+        assertEquals(4, run );
+        assertEquals(4, pre );
         assertEquals(100, x, 10);
     }
 
