@@ -22,19 +22,9 @@ import java.util.function.Consumer;
  */
 public class PriorityQueue<K> implements Iterable<K> {
 
-    /**
-     * @return true if the current size is zero.
-     */
-    public boolean isEmpty() {
-        return m == 0;
-    }
+    public boolean isEmpty() { return m == 0; }
 
-    /**
-     * @return the number of elements actually stored in this Priority Queue
-     */
-    public int size() {
-        return m;
-    }
+    public int size() { return m; }
 
     /**
      * Adds a key to the priority queue. If the priority queue is at its capacity,
@@ -267,7 +257,7 @@ public class PriorityQueue<K> implements Iterable<K> {
     /**
      * Exchange the values at indices i and j
      */
-    private void swap(int i, int j) {
+    public void swap(int i, int j) {
         K tmp = binHeap[i];
         binHeap[i] = binHeap[j];
         binHeap[j] = tmp;
@@ -276,7 +266,7 @@ public class PriorityQueue<K> implements Iterable<K> {
     /**
      * Get the index of the parent of the element at index k
      */
-    private int parent(int k) {
+    public int parent(int k) {
         return (k + 1 - first) / 2 + first - 1;
     }
 
@@ -284,21 +274,20 @@ public class PriorityQueue<K> implements Iterable<K> {
      * Get the index of the first child of the element at index k.
      * The index of the second child will be one greater than the result.
      */
-    private int firstChild(int k) {
+    public int firstChild(int k) {
         return (k + 1 - first) * 2 + first - 1;
     }
 
     /**
      * The following methods are for unit testing ONLY!!
      */
-
     @SuppressWarnings("unused")
-    private K peek(int k) {
+    public K peek(int k) {
         return binHeap[k];
     }
 
     @SuppressWarnings("unused")
-    private boolean getMax() {
+    public boolean getMax() {
         return max;
     }
 
@@ -332,7 +321,7 @@ public class PriorityQueue<K> implements Iterable<K> {
      * The array has a capacity determined at the creation of the PriorityQueue and
      * may include a single extra space for reorganization purposes.
      */
-    private final K[] binHeap;
+    public final K[] binHeap;
     /**
      * The current number of elements in the binary heap used by this priority queue.
      * This variable represents the dynamic size of the priority queue, and
