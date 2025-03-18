@@ -19,37 +19,46 @@ import java.util.concurrent.ForkJoinPool;
  * CONSIDER tidy it up a bit.
  */
 public class Main {
+    static int cut = 200000;
+    static int threadNum = 16000;
 
     public static void main(String[] args) {
         processArgs(args);
-        System.out.println("Degree of parallelism: " + ForkJoinPool.getCommonPoolParallelism());
+        // System.out.println("Degree of parallelism: " + ForkJoinPool.getCommonPoolParallelism());
+
+        ForkJoinPool pool = new ForkJoinPool(threadNum);
+        System.out.println("Degree of parallelism: " + pool.getParallelism());
+
         Random random = new Random();
-        int[] array = new int[2000000];
+        int[] array = new int[4000000];
         ArrayList<Long> timeList = new ArrayList<>();
         for (int j = 50; j < 100; j++) {
-            ParSort.cutoff = 10000 * (j + 1);
+            ParSort.cutoff = cut * (j + 1);
             // for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000000);
             long time;
             long startTime = System.currentTimeMillis();
-            for (int t = 0; t < 10; t++) {
-                for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000000);
-                ParSort.sort(array, 0, array.length);
-            }
+            pool.submit(() -> {
+                for (int t = 0; t < 10; t++) {
+                    for (int i = 0; i < array.length; i++) array[i] = random.nextInt(10000000);
+                    ParSort.sort(array, 0, array.length);
+            }}).join();
+
             long endTime = System.currentTimeMillis();
             time = (endTime - startTime);
             timeList.add(time);
 
-
             System.out.println("cutoff：" + (ParSort.cutoff) + "\t\t10times Time:" + time + "ms");
-
         }
+
+        pool.shutdown();
+
         try {
             FileOutputStream fis = new FileOutputStream("./src/result.csv");
             OutputStreamWriter isr = new OutputStreamWriter(fis);
             BufferedWriter bw = new BufferedWriter(isr);
             int j = 0;
             for (long i : timeList) {
-                String content = (double) 10000 * (j + 1) / 2000000 + "," + (double) i / 10 + "\n";
+                String content = (double) cut * (j + 1) / 4000000 + "," + (double) i / 10 + "\n";
                 j++;
                 bw.write(content);
                 bw.flush();
@@ -78,8 +87,9 @@ public class Main {
         if (x.equalsIgnoreCase("N")) setConfig(x, Integer.parseInt(y));
         else
             // TODO sort this out
-            if (x.equalsIgnoreCase("P")) //noinspection ResultOfMethodCallIgnored
-                ForkJoinPool.getCommonPoolParallelism();
+            if (x.equalsIgnoreCase("P")){   //noinspection ResultOfMethodCallIgnored
+                 ForkJoinPool.getCommonPoolParallelism();
+            }
     }
 
     private static void setConfig(String x, int i) {
@@ -88,6 +98,5 @@ public class Main {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final Map<String, Integer> configuration = new HashMap<>();
-
 
 }

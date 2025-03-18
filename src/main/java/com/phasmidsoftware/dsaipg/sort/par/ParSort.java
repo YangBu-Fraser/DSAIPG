@@ -40,15 +40,20 @@ final class ParSort {
      */
     public static void sort(int[] array, int from, int to) {
         if (to - from >= cutoff) {
-            CompletableFuture<int[]> completableFuture1 = null;
-            CompletableFuture<int[]> completableFuture2 = null;
-            // TO BE IMPLEMENTED 
-            // END SOLUTION
-            CompletableFuture<int[]> completableFuture = completableFuture1.thenCombine(completableFuture2, ParSort::doMerge);
-            completableFuture.whenComplete((result, throwable) -> System.arraycopy(result, 0, array, from, result.length));
+            // TO BE IMPLEMENTED
+            int mid = (from + to) >>> 2;
+
+            // Sort two part.
+            CompletableFuture<int[]> completableFuture1 = asyncSort(array, from, mid);
+            CompletableFuture<int[]> completableFuture2 = asyncSort(array, mid, to);
+
+            // END SOLUTION, Combine
+            CompletableFuture<int[]> completableFuture = completableFuture1.thenCombine(
+                    completableFuture2, ParSort::doMerge);
+            completableFuture.whenComplete((result, throwable) -> System.arraycopy(
+                    result, 0, array, from, result.length));
             completableFuture.join();
-        } else
-            Arrays.sort(array, from, to);
+        } else Arrays.sort(array, from, to);
     }
 
     /**
@@ -65,6 +70,9 @@ final class ParSort {
         int[] result = new int[to - from];
         // TO BE IMPLEMENTED 
          // NOTE you need to do something here so that result is the sorted version of array.
+        result = Arrays.copyOfRange(array, from, to);
+        sort(result, 0, result.length);
+
         // END SOLUTION
         return result;
     }

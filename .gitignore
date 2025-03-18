@@ -36,3 +36,5 @@ src/main/java/com/phasmidsoftware/dsaipg/sort/elementary/MergeSortDecisionTree\.
 
 /api/
 /SelectBenchmark.csv
+
+./src/result.csv
